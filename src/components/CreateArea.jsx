@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import Zoom from '@mui/material/Zoom';
 
 function CreateArea(props) {
 
@@ -6,6 +9,12 @@ function CreateArea(props) {
         title: "",
         content: ""
     });
+
+    const [isExpanded, setExpanded] = useState(false);
+
+    function expanded() {
+        setExpanded(true);
+    }
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -27,21 +36,28 @@ function CreateArea(props) {
     }
     return (
         <div>
-            <form>
-                <input
-                    name="title"
-                    placeholder="Title"
-                    value={note.title}
-                    onChange={handleChange}
-                />
+            <form className="create-note">
+                {isExpanded &&
+                    <input
+                        name="title"
+                        placeholder="Title"
+                        value={note.title}
+                        onChange={handleChange}
+                    />
+                }
                 <textarea
                     name="content"
                     placeholder="Take a note..."
-                    rows="3"
+                    rows={isExpanded ? 3 : 1}
                     value={note.content}
                     onChange={handleChange}
+                    onClick={expanded}
                 />
-                <button onClick={handleRequest}>Add</button>
+                <Zoom in={isExpanded}>
+                    <Fab onClick={handleRequest} aria-label="add">
+                        <AddIcon />
+                    </Fab>
+                </Zoom>
             </form>
         </div>
     );
